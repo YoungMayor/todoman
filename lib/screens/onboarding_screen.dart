@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_onboarding_slider/flutter_onboarding_slider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:todoman/screens/task_lists_screen.dart';
+import 'package:todoman/utils/shared_preferences_manager.dart';
 
 class OnboardingScreen extends StatelessWidget {
   const OnboardingScreen({super.key});
@@ -8,46 +10,20 @@ class OnboardingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
-    // MediaQueryData mediaQuery = MediaQuery.of(context);
-
     return Scaffold(
       body: OnBoardingSlider(
         finishButtonText: 'Get Started',
         onFinish: () {
-          // Navigator.push(
-          //   context,
-          //   CupertinoPageRoute(
-          //     builder: (context) => const RegisterPage(),
-          //   ),
-          // );
+          const SharedPreferencesManager.hasSeenOnboarding().setBool(true);
+
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (_) => TaskListsScreen()),
+          );
         },
         finishButtonStyle: FinishButtonStyle(
           backgroundColor: theme.colorScheme.primary,
         ),
-        // skipTextButton: const Text(
-        //   'Skip',
-        //   style: TextStyle(
-        //     fontSize: 16,
-        //     color: Colors.teal,
-        //     fontWeight: FontWeight.w600,
-        //   ),
-        // ),
-        // trailing: const Text(
-        //   'Login',
-        //   style: TextStyle(
-        //     fontSize: 16,
-        //     color: Colors.teal,
-        //     fontWeight: FontWeight.w600,
-        //   ),
-        // ),
-        trailingFunction: () {
-          // Navigator.push(
-          //   context,
-          //   CupertinoPageRoute(
-          //     builder: (context) => const LoginPage(),
-          //   ),
-          // );
-        },
         controllerColor: theme.colorScheme.secondary,
         totalPage: 3,
         headerBackgroundColor: theme.colorScheme.surface,
