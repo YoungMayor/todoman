@@ -18,7 +18,7 @@ class OnboardingScreen extends StatelessWidget {
 
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (_) => TaskListsScreen()),
+            MaterialPageRoute(builder: (_) => const TaskListsScreen()),
           );
         },
         finishButtonStyle: FinishButtonStyle(
