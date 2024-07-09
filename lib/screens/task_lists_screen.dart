@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
-// import 'package:todoman/screens/add_task_screen.dart';
-import 'package:todoman/screens/debug/debug_add_task_screen.dart';
+import 'package:todoman/screens/add_task_screen.dart';
 import 'package:todoman/screens/onboarding_screen.dart';
 import 'package:todoman/utils/shared_preferences_manager.dart';
 
@@ -27,7 +26,7 @@ class TaskListsScreen extends StatelessWidget {
           ),
         ),
         centerTitle: true,
-        backgroundColor: theme.colorScheme.secondaryContainer,
+        backgroundColor: theme.colorScheme.primaryContainer,
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
@@ -42,16 +41,13 @@ class TaskListsScreen extends StatelessWidget {
             return IconButton(
               icon: const Icon(Icons.add),
               onPressed: () {
-                // Scaffold.of(context).showBottomSheet(
-                //   (BuildContext context) {
-                //     return const AddTaskScreen();
-                //   },
-                //   showDragHandle: true,
-                //   backgroundColor: theme.colorScheme.secondaryContainer,
-                // );
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const DebugAddTaskScreen(),
-                ));
+                Scaffold.of(context).showBottomSheet(
+                  (BuildContext context) {
+                    return const AddTaskScreen();
+                  },
+                  showDragHandle: true,
+                  backgroundColor: theme.colorScheme.secondaryContainer,
+                );
               },
             );
           }),

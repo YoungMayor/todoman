@@ -6,6 +6,8 @@ import 'package:todoman/screens/task_lists_screen.dart';
 import 'package:todoman/utils/shared_preferences_manager.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
   runApp(const MyApp());
 }
 

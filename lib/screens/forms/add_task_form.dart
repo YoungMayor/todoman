@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:todoman/database.dart';
 import 'package:todoman/utils/validations.dart';
 import 'package:todoman/widgets/custom_text_form_field.dart';
 
@@ -12,8 +13,9 @@ class AddTaskForm extends StatefulWidget {
 
 class _AddTaskFormState extends State<AddTaskForm> {
   final _formKey = GlobalKey<FormState>();
-  final _todoTitleController = TextEditingController();
-  final _todoDescriptionController = TextEditingController();
+  final _taskTitleController = TextEditingController();
+  final _taskDescriptionController = TextEditingController();
+  bool _processing = false;
 
   @override
   Widget build(BuildContext context) {
@@ -24,16 +26,18 @@ class _AddTaskFormState extends State<AddTaskForm> {
       child: Column(
         children: <Widget>[
           CustomTextFormField(
-            controller: _todoTitleController,
+            controller: _taskTitleController,
             validator: (value) =>
                 Validations(value: value).required().validate(),
             labelText: appLocale.title,
+            disabled: _processing,
           ),
           CustomTextFormField(
-            controller: _todoDescriptionController,
+            controller: _taskDescriptionController,
             validator: (value) =>
                 Validations(value: value).required().validate(),
             labelText: appLocale.description,
+            disabled: _processing,
           ),
           FilledButton(
             style: const ButtonStyle(
@@ -51,24 +55,51 @@ class _AddTaskFormState extends State<AddTaskForm> {
     );
   }
 
-  void processForm(BuildContext context) {
-    bool isValid = _formKey.currentState!.validate();
+  void _showSnackbar(String content) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(content),
+      ),
+    );
+  }
 
-    ScaffoldMessengerState messengerState = ScaffoldMessenger.of(context);
+  void processForm(BuildContext context) async {
+    if (_processing) {
+      return _showSnackbar('Please wait');
+    }
 
-    if (isValid != true) {
-      messengerState.showSnackBar(
-        const SnackBar(
-          content: Text('Form is invalid!'),
-        ),
-      );
+    if (_formKey.currentState!.validate() != true) {
+      return _showSnackbar('Form is invalid');
+    }
+
+    try {
+      setState(() => _processing = true);
+      final database = AppDatabase();
+
+      int taskId = await database.into(database.tasks).insert(
+            TasksCompanion.insert(
+              title: _taskTitleController.text,
+              content: _taskDescriptionController.text,
+            ),
+          );
+
+      _taskTitleController.clear();
+      _taskDescriptionController.clear();
+
+      _showSnackbar("Task #$taskId added successfully");
+    } catch (e) {
+      _showSnackbar("An error kinda occurred");
+
+      rethrow;
+    } finally {
+      setState(() => _processing = false);
     }
   }
 
   @override
   void dispose() {
-    _todoTitleController.dispose();
-    _todoDescriptionController.dispose();
+    _taskTitleController.dispose();
+    _taskDescriptionController.dispose();
     super.dispose();
   }
 }
