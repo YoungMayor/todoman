@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:todoman/screens/add_task_screen.dart';
+// import 'package:todoman/screens/add_task_screen.dart';
 import 'package:todoman/screens/debug/debug_add_task_screen.dart';
 import 'package:todoman/screens/onboarding_screen.dart';
 import 'package:todoman/utils/shared_preferences_manager.dart';
@@ -15,7 +15,7 @@ class TaskListsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Todo Manager',
+          'TaskMaster',
           style: GoogleFonts.acme(
             textStyle: TextStyle(
               fontSize: 32,

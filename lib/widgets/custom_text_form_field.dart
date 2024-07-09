@@ -9,7 +9,7 @@ class CustomTextFormField extends StatelessWidget {
     required this.validator,
     required this.labelText,
     this.prefixIcon = Icons.abc,
-    this.verticalPadding = 20,
+    this.verticalPadding = 15,
   });
 
   final TextEditingController controller;
@@ -23,13 +23,13 @@ class CustomTextFormField extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: verticalPadding),
       child: TextFormField(
-        autofocus: true,
         autocorrect: true,
         controller: controller,
         validator: (value) => validator(value),
         decoration: InputDecoration(
           labelText: labelText,
           prefixIcon: Icon(prefixIcon),
+          filled: true,
           border: const OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(10)),
           ),

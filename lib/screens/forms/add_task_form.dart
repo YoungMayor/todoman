@@ -32,9 +32,13 @@ class _AddTaskFormState extends State<AddTaskForm> {
                 Validations(value: value).required().validate(),
             labelText: 'Description',
           ),
-          FilledButton.tonal(
+          FilledButton(
             style: const ButtonStyle(
-              visualDensity: VisualDensity.comfortable, 
+              shape: WidgetStatePropertyAll(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.elliptical(12, 12)),
+                ),
+              ),
             ),
             onPressed: () => processForm(context),
             child: const Text('Submit'),
