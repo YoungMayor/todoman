@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:todoman/utils/validations.dart';
 import 'package:todoman/widgets/custom_text_form_field.dart';
 
@@ -16,6 +17,8 @@ class _AddTaskFormState extends State<AddTaskForm> {
 
   @override
   Widget build(BuildContext context) {
+    AppLocalizations appLocale = AppLocalizations.of(context)!;
+
     return Form(
       key: _formKey,
       child: Column(
@@ -24,13 +27,13 @@ class _AddTaskFormState extends State<AddTaskForm> {
             controller: _todoTitleController,
             validator: (value) =>
                 Validations(value: value).required().validate(),
-            labelText: 'Title',
+            labelText: appLocale.title,
           ),
           CustomTextFormField(
             controller: _todoDescriptionController,
             validator: (value) =>
                 Validations(value: value).required().validate(),
-            labelText: 'Description',
+            labelText: appLocale.description,
           ),
           FilledButton(
             style: const ButtonStyle(
@@ -41,7 +44,7 @@ class _AddTaskFormState extends State<AddTaskForm> {
               ),
             ),
             onPressed: () => processForm(context),
-            child: const Text('Submit'),
+            child: Text(appLocale.submit),
           ),
         ],
       ),

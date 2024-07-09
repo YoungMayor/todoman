@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_onboarding_slider/flutter_onboarding_slider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:todoman/screens/task_lists_screen.dart';
@@ -10,9 +11,11 @@ class OnboardingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
+    AppLocalizations? appLocale = AppLocalizations.of(context)!;
+
     return Scaffold(
       body: OnBoardingSlider(
-        finishButtonText: 'Get Started',
+        finishButtonText: appLocale.getStarted, 
         onFinish: () {
           const SharedPreferencesManager.hasSeenOnboarding().setBool(true);
 
@@ -40,21 +43,18 @@ class OnboardingScreen extends StatelessWidget {
           ),
         ],
         speed: 1.8,
-        pageBodies: const [
+        pageBodies: [
           OnboardingBody(
-            title: 'Welcome to TaskMaster',
-            content:
-                'Organise your tasks efficiently and get more done with TaskMaster. Stay productive and keep track of all your to-dos in one place.',
+            title: appLocale.onboardingWelcomeTitle,
+            content: appLocale.onboardingWelcomeNote,
           ),
           OnboardingBody(
-            title: 'Plan Your Day',
-            content:
-                'Easily plan your day by adding tasks and setting priorities. Never miss a deadline or forget an important task again.',
+            title: appLocale.onboardingPlanTitle,
+            content: appLocale.onboardingPlanNote,
           ),
           OnboardingBody(
-            title: 'Achieve Your Goals',
-            content:
-                'Track your progress and achieve your goals with TaskMaster. Your path to productivity starts here.',
+            title: appLocale.onboardingGoalsTitle,
+            content: appLocale.onboardingGoalsNote,
           ),
         ],
       ),

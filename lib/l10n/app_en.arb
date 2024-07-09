@@ -1,0 +1,16 @@
+{
+  "@@locale": "en",
+  "projectName": "TaskMaster",
+  "onboardingWelcomeTitle": "Welcome to TaskMaster!",
+  "onboardingWelcomeNote": "Organise your tasks efficiently and get more done with TaskMaster. Stay productive and keep track of all your to-dos in one place.",
+  "onboardingPlanTitle": "Plan your Day",
+  "onboardingPlanNote": "Easily plan your day by adding tasks and setting priorities. Never miss a deadline or forget an important task again.",
+  "onboardingGoalsTitle": "Achieve your Goals",
+  "onboardingGoalsNote": "Track your progress and achieve your goals with TaskMaster. Your path to productivity starts here.",
+
+  "createTask": "Create new task",
+  "description": "Description",
+  "getStarted": "Get Started",
+  "submit": "Submit",
+  "title": "Title"
+}

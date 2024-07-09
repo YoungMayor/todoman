@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 // import 'package:todoman/screens/add_task_screen.dart';
 import 'package:todoman/screens/debug/debug_add_task_screen.dart';
@@ -11,11 +12,12 @@ class TaskListsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
+    AppLocalizations? appLocale = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'TaskMaster',
+          appLocale.projectName,
           style: GoogleFonts.acme(
             textStyle: TextStyle(
               fontSize: 32,
