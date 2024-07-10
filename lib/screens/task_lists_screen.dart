@@ -1,41 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:todoman/screens/add_task_screen.dart';
 import 'package:todoman/screens/onboarding_screen.dart';
 import 'package:todoman/utils/shared_preferences_manager.dart';
-import 'package:todoman/database.dart' as db;
+import 'package:todoman/database.dart';
 import 'package:todoman/widgets/task_item.dart';
 
-class TaskListsScreen extends StatefulWidget {
+// class TaskListsScreen extends StatefulWidget {
+//   const TaskListsScreen({super.key});
+
+//   @override
+//   State<TaskListsScreen> createState() => _TaskListsScreenState();
+// }
+
+class TaskListsScreen extends StatelessWidget {
   const TaskListsScreen({super.key});
-
-  @override
-  State<TaskListsScreen> createState() => _TaskListsScreenState();
-}
-
-class _TaskListsScreenState extends State<TaskListsScreen> {
-  final List<db.Task> _tasks = [];
-
-  final db.AppDatabase _database = db.AppDatabase();
-
-  Future<void> refresh() async {
-    await Future.delayed(const Duration(seconds: 2));
-
-    List<db.Task> fetched = await _database.managers.tasks.get();
-
-    setState(() {
-      _tasks.clear();
-      _tasks.addAll(fetched);
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    refresh();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,13 +62,34 @@ class _TaskListsScreenState extends State<TaskListsScreen> {
           }),
         ],
       ),
-      body: RefreshIndicator(
-        onRefresh: refresh,
-        child: ListView.builder(
-          itemBuilder: (context, index) => TaskItem(task: _tasks[index]),
-          itemCount: _tasks.length,
-        ),
-      ),
+      body: const TaskListItems(),
+    );
+  }
+}
+
+class TaskListItems extends StatelessWidget {
+  const TaskListItems({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final database = Provider.of<AppDatabase>(context);
+
+    return StreamBuilder<List<Task>>(
+      stream: database.managers.tasks.watch(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        print("loadded");
+
+        final tasks = snapshot.data ?? [];
+
+        return ListView.builder(
+          itemBuilder: (context, index) => TaskItem(task: tasks[index]),
+          itemCount: tasks.length,
+        );
+      },
     );
   }
 }

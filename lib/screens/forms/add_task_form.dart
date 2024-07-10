@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
 import 'package:todoman/database.dart';
 import 'package:todoman/utils/validations.dart';
 import 'package:todoman/widgets/custom_text_form_field.dart';
@@ -74,7 +75,11 @@ class _AddTaskFormState extends State<AddTaskForm> {
 
     try {
       setState(() => _processing = true);
-      final database = AppDatabase();
+
+      final database = Provider.of<AppDatabase>(
+        context,
+        listen: false,
+      );
 
       int taskId = await database.into(database.tasks).insert(
             TasksCompanion.insert(

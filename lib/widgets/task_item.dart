@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:todoman/database.dart' as db;
+import 'package:todoman/database.dart';
 
 class TaskItem extends StatefulWidget {
   const TaskItem({super.key, required this.task});
 
-  final db.Task task;
+  final Task task;
 
   @override
   State<TaskItem> createState() => _TaskItemState();
 }
 
 class _TaskItemState extends State<TaskItem> {
-  bool _isChecked = true;
+  late bool _isChecked = widget.task.doneAt != null;
 
   @override
   Widget build(BuildContext context) {
