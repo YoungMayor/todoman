@@ -1,3 +1,4 @@
+import 'package:drift/drift.dart' as drift;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
@@ -85,6 +86,8 @@ class _AddTaskFormState extends State<AddTaskForm> {
             TasksCompanion.insert(
               title: _taskTitleController.text,
               content: _taskDescriptionController.text,
+              createdAt: drift.Value(DateTime.now()),
+              updatedAt: drift.Value(DateTime.now()),
             ),
           );
 
