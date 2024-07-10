@@ -13,7 +13,7 @@ class TaskItem extends StatefulWidget {
 }
 
 class _TaskItemState extends State<TaskItem> {
-  late final bool _isDone = widget.task.doneAt != null;
+  late bool _isDone = widget.task.doneAt != null;
 
   @override
   Widget build(BuildContext context) {
@@ -44,14 +44,22 @@ class _TaskItemState extends State<TaskItem> {
           ),
         ),
         leading: Icon(
-          _isDone ? Icons.check_rounded : Icons.check_box_outline_blank,
+          _isDone ? Icons.check_rounded : Icons.circle_outlined,
         ),
-        onTap: () {
+        onTap: () async {
+          bool oldIsDone = _isDone;
+
+          setState(() {
+            _isDone = !_isDone;
+          });
+
+          await Future.delayed(const Duration(milliseconds: 250));
+
           database.managers.tasks
               .filter((f) => f.id.equals(widget.task.id))
               .update(
                 (o) => o(
-                  doneAt: _isDone
+                  doneAt: oldIsDone
                       ? const drift.Value(null)
                       : drift.Value(DateTime.now()),
                   updatedAt: drift.Value(DateTime.now()),

@@ -167,7 +167,10 @@ class _TaskListItems extends StatelessWidget {
         }
 
         return ListView.builder(
-          itemBuilder: (context, index) => TaskItem(task: tasks[index]),
+          itemBuilder: (context, index) => TaskItem(
+            task: tasks[index],
+            key: UniqueKey(),
+          ),
           itemCount: tasks.length,
         );
       },
