@@ -13,9 +13,29 @@ class TaskListsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      appBar: TaskListAppBar(),
-      body: TaskListItems(),
+    final database = Provider.of<AppDatabase>(context);
+
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: const TaskListAppBar(),
+        body: TabBarView(
+          children: [
+            TaskListItems(
+              stream: database.managers.tasks
+                  .filter((f) => f.doneAt.isNull())
+                  .orderBy((o) => o.createdAt.desc())
+                  .watch(),
+            ),
+            TaskListItems(
+              stream: database.managers.tasks
+                  .filter((f) => f.doneAt.not.isNull())
+                  .orderBy((o) => o.createdAt.desc())
+                  .watch(),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -65,29 +85,54 @@ class TaskListAppBar extends StatelessWidget implements PreferredSizeWidget {
           );
         }),
       ],
+      bottom: const TabBar(
+        tabs: [
+          Tab(
+            icon: Icon(Icons.hourglass_empty),
+            text: "In Progress",
+          ),
+          Tab(
+            icon: Icon(Icons.done),
+            text: "Completed",
+          ),
+        ],
+      ),
     );
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+  Size get preferredSize =>
+      const Size.fromHeight(kToolbarHeight + kBottomNavigationBarHeight);
 }
 
 class TaskListItems extends StatelessWidget {
-  const TaskListItems({super.key});
+  const TaskListItems({super.key, required this.stream});
+
+  final Stream<List<Task>> stream;
 
   @override
   Widget build(BuildContext context) {
-    final database = Provider.of<AppDatabase>(context);
-
     return StreamBuilder<List<Task>>(
-      stream:
-          database.managers.tasks.orderBy((o) => o.createdAt.desc()).watch(),
+      stream: stream,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         }
 
         final tasks = snapshot.data ?? [];
+
+        if (tasks.isEmpty) {
+          return const Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.inbox, size: 64),
+                SizedBox(height: 16),
+                Text("Nothing here yet..."),
+              ],
+            ),
+          );
+        }
 
         return ListView.builder(
           itemBuilder: (context, index) => TaskItem(task: tasks[index]),
