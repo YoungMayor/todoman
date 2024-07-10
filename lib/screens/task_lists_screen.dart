@@ -18,19 +18,19 @@ class TaskListsScreen extends StatelessWidget {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        appBar: const TaskListAppBar(),
+        appBar: const _TaskListAppBar(),
         body: TabBarView(
           children: [
-            TaskListItems(
+            _TaskListItems(
               stream: database.managers.tasks
                   .filter((f) => f.doneAt.isNull())
-                  .orderBy((o) => o.createdAt.desc())
+                  .orderBy((o) => o.updatedAt.desc())
                   .watch(),
             ),
-            TaskListItems(
+            _TaskListItems(
               stream: database.managers.tasks
                   .filter((f) => f.doneAt.not.isNull())
-                  .orderBy((o) => o.createdAt.desc())
+                  .orderBy((o) => o.updatedAt.desc())
                   .watch(),
             ),
           ],
@@ -40,8 +40,8 @@ class TaskListsScreen extends StatelessWidget {
   }
 }
 
-class TaskListAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const TaskListAppBar({super.key});
+class _TaskListAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const _TaskListAppBar();
 
   @override
   Widget build(BuildContext context) {
@@ -105,8 +105,8 @@ class TaskListAppBar extends StatelessWidget implements PreferredSizeWidget {
       const Size.fromHeight(kToolbarHeight + kBottomNavigationBarHeight);
 }
 
-class TaskListItems extends StatelessWidget {
-  const TaskListItems({super.key, required this.stream});
+class _TaskListItems extends StatelessWidget {
+  const _TaskListItems({required this.stream});
 
   final Stream<List<Task>> stream;
 

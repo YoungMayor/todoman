@@ -1,4 +1,6 @@
+import 'package:drift/drift.dart' as drift;
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todoman/database.dart';
 
 class TaskItem extends StatefulWidget {
@@ -11,11 +13,12 @@ class TaskItem extends StatefulWidget {
 }
 
 class _TaskItemState extends State<TaskItem> {
-  late bool _isChecked = widget.task.doneAt != null;
+  late final bool _isDone = widget.task.doneAt != null;
 
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
+    AppDatabase database = Provider.of<AppDatabase>(context);
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -24,8 +27,8 @@ class _TaskItemState extends State<TaskItem> {
           widget.task.title,
           style: TextStyle(
             decoration:
-                _isChecked ? TextDecoration.lineThrough : TextDecoration.none,
-            color: _isChecked
+                _isDone ? TextDecoration.lineThrough : TextDecoration.none,
+            color: _isDone
                 ? theme.colorScheme.primary
                 : theme.colorScheme.onSurface,
           ),
@@ -34,24 +37,26 @@ class _TaskItemState extends State<TaskItem> {
           widget.task.content,
           style: TextStyle(
             decoration:
-                _isChecked ? TextDecoration.lineThrough : TextDecoration.none,
-            color: _isChecked
+                _isDone ? TextDecoration.lineThrough : TextDecoration.none,
+            color: _isDone
                 ? theme.colorScheme.primary
                 : theme.colorScheme.onSurface,
           ),
         ),
         leading: Icon(
-          _isChecked ? Icons.check_rounded : Icons.check_box_outline_blank,
+          _isDone ? Icons.check_rounded : Icons.check_box_outline_blank,
         ),
-        // trailing: Checkbox(
-        //   shape: const CircleBorder(),
-        //   value: _isChecked,
-        //   onChanged: (bool? value) {},
-        // ),
         onTap: () {
-          setState(() {
-            _isChecked = !_isChecked;
-          });
+          database.managers.tasks
+              .filter((f) => f.id.equals(widget.task.id))
+              .update(
+                (o) => o(
+                  doneAt: _isDone
+                      ? const drift.Value.absent()
+                      : drift.Value(DateTime.now()),
+                  updatedAt: drift.Value(DateTime.now()),
+                ),
+              );
         },
       ),
     );
