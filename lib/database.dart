@@ -10,8 +10,10 @@ part 'database.g.dart';
 
 class Tasks extends Table {
   IntColumn get id => integer().autoIncrement()();
-  TextColumn get title => text().withLength(min: 6, max: 32)();
+  TextColumn get title => text().withLength(min: 2, max: 128)();
   TextColumn get content => text().named('body')();
+  DateTimeColumn get doneAt =>
+      dateTime().nullable()(); // new, added column in v2
   DateTimeColumn get createdAt => dateTime().nullable()();
 }
 
@@ -20,7 +22,21 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
+
+  @override
+  MigrationStrategy get migration {
+    return MigrationStrategy(
+      onCreate: (Migrator m) async {
+        await m.createAll();
+      },
+      onUpgrade: (Migrator m, int from, int to) async {
+        if (from < 2) {
+          await m.addColumn(tasks, tasks.doneAt);
+        }
+      },
+    );
+  }
 }
 
 LazyDatabase _openConnection() {
