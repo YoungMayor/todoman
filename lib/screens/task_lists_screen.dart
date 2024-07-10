@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -28,6 +27,7 @@ class TaskListsScreen extends StatelessWidget {
 
     return DefaultTabController(
       length: 2,
+      animationDuration: Durations.long4,
       child: Scaffold(
         appBar: _TaskListAppBar(
           pendingStream: pendingTasksStream,
