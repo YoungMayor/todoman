@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -15,24 +16,27 @@ class TaskListsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final database = Provider.of<AppDatabase>(context);
 
+    late final Stream<List<Task>> pendingTasksStream = database.managers.tasks
+        .filter((f) => f.doneAt.isNull())
+        .orderBy((o) => o.updatedAt.desc())
+        .watch();
+
+    late final Stream<List<Task>> completedTasksStream = database.managers.tasks
+        .filter((f) => f.doneAt.not.isNull())
+        .orderBy((o) => o.updatedAt.desc())
+        .watch();
+
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        appBar: const _TaskListAppBar(),
+        appBar: _TaskListAppBar(
+          pendingStream: pendingTasksStream,
+          completedStream: completedTasksStream,
+        ),
         body: TabBarView(
           children: [
-            _TaskListItems(
-              stream: database.managers.tasks
-                  .filter((f) => f.doneAt.isNull())
-                  .orderBy((o) => o.updatedAt.desc())
-                  .watch(),
-            ),
-            _TaskListItems(
-              stream: database.managers.tasks
-                  .filter((f) => f.doneAt.not.isNull())
-                  .orderBy((o) => o.updatedAt.desc())
-                  .watch(),
-            ),
+            _TaskListItems(stream: pendingTasksStream),
+            _TaskListItems(stream: completedTasksStream),
           ],
         ),
       ),
@@ -41,7 +45,12 @@ class TaskListsScreen extends StatelessWidget {
 }
 
 class _TaskListAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const _TaskListAppBar();
+  const _TaskListAppBar({
+    required this.pendingStream,
+    required this.completedStream,
+  });
+
+  final Stream<List<Task>> pendingStream, completedStream;
 
   @override
   Widget build(BuildContext context) {
@@ -85,18 +94,41 @@ class _TaskListAppBar extends StatelessWidget implements PreferredSizeWidget {
           );
         }),
       ],
-      bottom: const TabBar(
+      bottom: TabBar(
         tabs: [
-          Tab(
-            icon: Icon(Icons.hourglass_empty),
-            text: "In Progress",
+          _tabWithCounter(
+            stream: pendingStream,
+            icon: Icons.hourglass_empty,
+            prefix: "Pending",
           ),
-          Tab(
-            icon: Icon(Icons.done),
-            text: "Completed",
+          _tabWithCounter(
+            stream: completedStream,
+            icon: Icons.done,
+            prefix: "Completed",
           ),
         ],
       ),
+    );
+  }
+
+  StreamBuilder<List<Task>> _tabWithCounter({
+    required Stream<List<Task>> stream,
+    required IconData icon,
+    required String prefix,
+  }) {
+    return StreamBuilder<List<Task>>(
+      stream: stream,
+      builder: (context, snapshot) {
+        int count = 0;
+        if (snapshot.hasData && snapshot.data != null) {
+          count = snapshot.data!.length;
+        }
+
+        return Tab(
+          icon: Icon(icon),
+          text: count > 0 ? "$prefix ($count)" : prefix,
+        );
+      },
     );
   }
 

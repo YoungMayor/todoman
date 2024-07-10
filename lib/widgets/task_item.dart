@@ -1,4 +1,5 @@
 import 'package:drift/drift.dart' as drift;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todoman/database.dart';
@@ -52,7 +53,7 @@ class _TaskItemState extends State<TaskItem> {
               .update(
                 (o) => o(
                   doneAt: _isDone
-                      ? const drift.Value.absent()
+                      ? const drift.Value(null)
                       : drift.Value(DateTime.now()),
                   updatedAt: drift.Value(DateTime.now()),
                 ),
