@@ -12,7 +12,6 @@ class TaskListsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final database = Provider.of<AppDatabase>(context);
-    ThemeData theme = Theme.of(context);
 
     late final Stream<List<Task>> pendingTasksStream = database.managers.tasks
         .filter((f) => f.doneAt.isNull())

@@ -19,6 +19,7 @@ class _TaskItemState extends State<TaskItem> {
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     AppDatabase database = Provider.of<AppDatabase>(context);
+    NavigatorState navigator = Navigator.of(context);
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -45,6 +46,47 @@ class _TaskItemState extends State<TaskItem> {
         ),
         leading: Icon(
           _isDone ? Icons.check_rounded : Icons.circle_outlined,
+        ),
+        trailing: IconButton(
+          color: Colors.redAccent,
+          icon: const Icon(Icons.delete_forever),
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog.adaptive(
+                  title: const Text("Are you sure??"),
+                  content: const Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Center(
+                        child: Text("This will permanently delete this task."),
+                      ),
+                      Center(child: Text("This cannot be undone!")),
+                    ],
+                  ),
+                  actions: [
+                    TextButton(
+                      child: const Text('No, Cancel'),
+                      onPressed: () {
+                        navigator.pop();
+                      },
+                    ),
+                    TextButton(
+                      child: const Text('Yes, Delete'),
+                      onPressed: () async {
+                        await database.managers.tasks
+                            .filter((f) => f.id.equals(widget.task.id))
+                            .delete();
+
+                        navigator.pop();
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
+          },
         ),
         onTap: () async {
           bool oldIsDone = _isDone;
