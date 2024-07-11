@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:todoman/screens/add_task_screen.dart';
 import 'package:todoman/database.dart';
+import 'package:todoman/screens/settings_screen.dart';
 import 'package:todoman/widgets/task_item.dart';
 
 class TaskListsScreen extends StatelessWidget {
@@ -91,6 +92,16 @@ class _TaskListAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       centerTitle: true,
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.settings),
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => const SettingsScreen(),
+            ));
+          },
+        )
+      ],
       bottom: TabBar(
         tabs: [
           _tabWithCounter(
