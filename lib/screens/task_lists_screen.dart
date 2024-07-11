@@ -3,8 +3,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:todoman/screens/add_task_screen.dart';
-import 'package:todoman/screens/onboarding_screen.dart';
-import 'package:todoman/utils/shared_preferences_manager.dart';
 import 'package:todoman/database.dart';
 import 'package:todoman/widgets/task_item.dart';
 
