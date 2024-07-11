@@ -14,6 +14,7 @@ class TaskListsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final database = Provider.of<AppDatabase>(context);
+    ThemeData theme = Theme.of(context);
 
     late final Stream<List<Task>> pendingTasksStream = database.managers.tasks
         .filter((f) => f.doneAt.isNull())
@@ -39,6 +40,30 @@ class TaskListsScreen extends StatelessWidget {
             _TaskListItems(stream: completedTasksStream),
           ],
         ),
+        floatingActionButton: FloatingActionButton.extended(
+          icon: const Icon(Icons.add),
+          label: const Text('Add Task'),
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog.adaptive(
+                  content: const AddTaskScreen(),
+                  actions: <Widget>[
+                    TextButton(
+                      child: const Text('Cancel'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                  scrollable: true,
+                );
+              },
+            );
+          },
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       ),
     );
   }
@@ -69,31 +94,6 @@ class _TaskListAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       centerTitle: true,
-      actions: [
-        IconButton(
-          icon: const Icon(Icons.logout),
-          onPressed: () {
-            const SharedPreferencesManager.hasSeenOnboarding().setBool(false);
-            Navigator.of(context).pushReplacement(MaterialPageRoute(
-              builder: (context) => const OnboardingScreen(),
-            ));
-          },
-        ),
-        Builder(builder: (context) {
-          return IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: () {
-              Scaffold.of(context).showBottomSheet(
-                (BuildContext context) {
-                  return const AddTaskScreen();
-                },
-                showDragHandle: true,
-                backgroundColor: theme.colorScheme.secondaryContainer,
-              );
-            },
-          );
-        }),
-      ],
       bottom: TabBar(
         tabs: [
           _tabWithCounter(

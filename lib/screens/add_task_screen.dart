@@ -11,7 +11,7 @@ class AddTaskScreen extends StatelessWidget {
     ThemeData theme = Theme.of(context);
 
     return Container(
-      padding: const EdgeInsets.all(30),
+      padding: const EdgeInsets.all(0),
       width: mediaQuery.size.width,
       child: Column(
         mainAxisSize: MainAxisSize.min,
