@@ -92,12 +92,13 @@ class _TaskListAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       centerTitle: true,
+      automaticallyImplyLeading: false,
       actions: [
         IconButton(
           icon: const Icon(Icons.settings),
           onPressed: () {
             Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => const SettingsScreen(),
+              builder: (context) => SettingsScreen(),
             ));
           },
         )

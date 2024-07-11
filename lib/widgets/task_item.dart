@@ -48,7 +48,7 @@ class _TaskItemState extends State<TaskItem> {
           _isDone ? Icons.check_rounded : Icons.circle_outlined,
         ),
         trailing: IconButton(
-          color: Colors.redAccent,
+          color: Colors.red.shade400,
           icon: const Icon(Icons.delete_forever),
           onPressed: () {
             showDialog(
