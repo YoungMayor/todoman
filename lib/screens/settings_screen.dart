@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:todoman/screens/settings/about_us_screen.dart';
 import 'package:todoman/screens/settings/delete_data_screen.dart';
 import 'package:todoman/screens/settings/faq_screen.dart';
@@ -18,32 +17,17 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ThemeData theme = Theme.of(context);
-    AppLocalizations? appLocale = AppLocalizations.of(context)!;
-
     return Scaffold(
       appBar: AppBar(),
       body: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Center(
-            child: FlutterLogo(
-              size: 160,
-            ),
-          ),
           Center(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                appLocale.projectName,
-                style: GoogleFonts.ubuntu(
-                  textStyle: TextStyle(
-                    fontSize: 32,
-                    color: theme.colorScheme.secondary,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
+            child: SvgPicture.asset(
+              "assets/images/logo/7.svg",
+              alignment: Alignment.bottomCenter,
+              width: 320,
+              fit: BoxFit.contain,
             ),
           ),
           Expanded(

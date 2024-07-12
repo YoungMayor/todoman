@@ -17,7 +17,7 @@ class AddTaskScreen extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            'Create a todo',
+            'Create Task',
             style: GoogleFonts.ubuntu(
               textStyle: TextStyle(
                 fontSize: 32,

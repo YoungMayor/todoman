@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_onboarding_slider/flutter_onboarding_slider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:todoman/screens/task_lists_screen.dart';
 import 'package:todoman/utils/shared_preferences_manager.dart';
 
@@ -15,7 +16,7 @@ class OnboardingScreen extends StatelessWidget {
 
     return Scaffold(
       body: OnBoardingSlider(
-        finishButtonText: appLocale.getStarted, 
+        finishButtonText: appLocale.getStarted,
         onFinish: () {
           const SharedPreferencesManager.hasSeenOnboarding().setBool(true);
 
@@ -111,12 +112,12 @@ class OnboardingBody extends StatelessWidget {
           ),
           Text(
             title,
-            style: TextStyle(
-              // @todo: Change font to something heavy
+            style: GoogleFonts.ubuntu(
               color: theme.colorScheme.primary,
               fontSize: 36.0,
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeight.bold,
             ),
+            textAlign: TextAlign.center,
           ),
           const SizedBox(
             height: 20,
