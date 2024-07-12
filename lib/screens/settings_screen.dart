@@ -11,7 +11,7 @@ class SettingsScreen extends StatelessWidget {
 
   final List<(String, IconData, Widget)> settingMenuItems = [
     ("About us", Icons.info_outline, const AboutUsScreen()),
-    ("FAQs", Icons.question_mark, const FAQScreen()),
+    ("Frequently Asked Questions", Icons.question_mark, FAQScreen()),
     ("Help & Feedback", Icons.feedback_outlined, const HelpAndFeedbackScreen()),
     ("Delete Data", Icons.delete_outline_rounded, const DeleteDataScreen()),
   ];
