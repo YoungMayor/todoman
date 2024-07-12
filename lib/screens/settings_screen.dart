@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:todoman/screens/settings/about_us_screen.dart';
 import 'package:todoman/screens/settings/delete_data_screen.dart';
 import 'package:todoman/screens/settings/faq_screen.dart';
-import 'package:todoman/screens/settings/help_and_feedback_screen.dart';
+// import 'package:todoman/screens/settings/help_and_feedback_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
   SettingsScreen({super.key});
@@ -12,7 +12,7 @@ class SettingsScreen extends StatelessWidget {
   final List<(String, IconData, Widget)> settingMenuItems = [
     ("About us", Icons.info_outline, const AboutUsScreen()),
     ("Frequently Asked Questions", Icons.question_mark, FAQScreen()),
-    ("Help & Feedback", Icons.feedback_outlined, const HelpAndFeedbackScreen()),
+    // ("Help & Feedback", Icons.feedback_outlined, const HelpAndFeedbackScreen()),
     ("Delete Data", Icons.delete_outline_rounded, const DeleteDataScreen()),
   ];
 
