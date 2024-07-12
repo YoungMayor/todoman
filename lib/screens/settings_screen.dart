@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+import 'package:todoman/main.dart';
 import 'package:todoman/screens/settings/about_us_screen.dart';
 import 'package:todoman/screens/settings/delete_data_screen.dart';
 import 'package:todoman/screens/settings/faq_screen.dart';
@@ -10,27 +12,52 @@ void _pushPage(BuildContext context, Widget page) {
   ));
 }
 
+void _randomiseTheme(BuildContext context) {
+  ThemeProvider themeProvider =
+      Provider.of<ThemeProvider>(context, listen: false);
+
+  themeProvider.randomise();
+
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text("App Theme changed to ${themeProvider.themeLabel} mode"),
+    ),
+    snackBarAnimationStyle: AnimationStyle(duration: Durations.short4),
+  );
+}
+
 typedef MenuItemCallback = void Function(BuildContext);
+
+typedef SettingsMenuItem = (String, String?, IconData, MenuItemCallback);
 
 class SettingsScreen extends StatelessWidget {
   SettingsScreen({super.key});
 
-  final List<(String, IconData, MenuItemCallback)> settingMenuItems = [
+  final List<SettingsMenuItem> settingMenuItems = [
     (
       "About us",
+      "Learn more about us...",
       Icons.info_outline,
       (context) => _pushPage(context, const AboutUsScreen())
     ),
     (
-      "Frequently Asked Questions",
+      "FAQs",
+      "Check out our most Frequently Asked Questions...",
       Icons.question_mark,
       (context) => _pushPage(context, FAQScreen())
     ),
     (
+      "Change Theme",
+      null,
+      Icons.light,
+      (context) => _randomiseTheme(context),
+    ),
+    (
       "Delete Data",
+      null,
       Icons.delete_outline_rounded,
       (context) => _pushPage(context, const DeleteDataScreen())
-    )
+    ),
   ];
 
   @override
@@ -52,14 +79,15 @@ class SettingsScreen extends StatelessWidget {
             child: ListView.separated(
               itemCount: settingMenuItems.length,
               itemBuilder: (context, index) {
-                (String, IconData, MenuItemCallback) settingItem =
-                    settingMenuItems[index];
+                SettingsMenuItem settingItem = settingMenuItems[index];
 
                 return ListTile(
                   title: Text(settingItem.$1),
-                  leading: Icon(settingItem.$2),
+                  subtitle:
+                      settingItem.$2 != null ? Text(settingItem.$2!) : null,
+                  leading: Icon(settingItem.$3),
                   trailing: const Icon(Icons.chevron_right),
-                  onTap: () => settingItem.$3(context),
+                  onTap: () => settingItem.$4(context),
                 );
               },
               separatorBuilder: (context, index) => const Divider(
