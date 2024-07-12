@@ -10,7 +10,6 @@ class DeleteDataScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    MediaQueryData mediaQuery = MediaQuery.of(context);
     ThemeData theme = Theme.of(context);
     NavigatorState navigator = Navigator.of(context);
     AppDatabase database = Provider.of<AppDatabase>(context);
