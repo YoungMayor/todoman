@@ -36,7 +36,7 @@ class SettingsScreen extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: Text(
                 appLocale.projectName,
-                style: GoogleFonts.acme(
+                style: GoogleFonts.ubuntu(
                   textStyle: TextStyle(
                     fontSize: 32,
                     color: theme.colorScheme.secondary,

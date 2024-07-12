@@ -83,7 +83,7 @@ class _TaskListAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       title: Text(
         appLocale.projectName,
-        style: GoogleFonts.acme(
+        style: GoogleFonts.ubuntu(
           textStyle: TextStyle(
             fontSize: 32,
             color: theme.colorScheme.secondary,

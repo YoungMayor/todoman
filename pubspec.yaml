@@ -49,6 +49,7 @@ dependencies:
   provider: ^6.1.2
   flutter_markdown: ^0.7.3
   url_launcher: ^6.3.0
+  flutter_launcher_icons: ^0.13.1
 
 dev_dependencies:
   flutter_test:
