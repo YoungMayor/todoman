@@ -96,11 +96,9 @@ class _TaskListAppBar extends StatelessWidget implements PreferredSizeWidget {
       actions: [
         IconButton(
           icon: const Icon(Icons.settings),
-          onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => SettingsScreen(),
-            ));
-          },
+          onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => SettingsScreen(),
+          )),
         )
       ],
       bottom: TabBar(

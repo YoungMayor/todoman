@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:todoman/main.dart';
+import 'package:todoman/screens/auth_protection_screen.dart';
 import 'package:todoman/screens/settings/about_us_screen.dart';
 import 'package:todoman/screens/settings/delete_data_screen.dart';
 import 'package:todoman/screens/settings/faq_screen.dart';
@@ -56,7 +57,10 @@ class SettingsScreen extends StatelessWidget {
       "Delete Data",
       null,
       Icons.delete_outline_rounded,
-      (context) => _pushPage(context, const DeleteDataScreen())
+      (context) => AuthProtectionScreen.pushAuthThenReplace(
+            context,
+            const DeleteDataScreen(),
+          )
     ),
   ];
 
